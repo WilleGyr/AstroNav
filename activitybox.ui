@@ -211,22 +211,28 @@ border-image: url(&quot;:/SpaceKnappar/SearchButton(NotPressed).png&quot;) 0 0 0
    </property>
    <property name="styleSheet">
     <string notr="true">QComboBox {
-        background-color: rgb(46, 47, 48);
-        color: white;
-        border: 1px solid #2574F5;
-        padding: 5px;
-        border-radius: 5px;
-    }
-    QComboBox:hover {
-        border: 1px solid #5299F8; /* Slightly lighter blue on hover */
-    }
-    QComboBox QAbstractItemView {
-        background-color: rgb(46, 47, 48);
-        color: white;
-        selection-background-color: #2574F5;
-        selection-color: white;
-        border: 1px solid #2574F5;
-    }</string>
+    background-color: rgb(46, 47, 48);
+    color: white;
+    border: 1px solid #2574F5;
+    padding: 5px;
+    border-radius: 5px;
+}
+QComboBox:hover {
+    background-color: rgb(60, 60, 62); /* Slightly lighter background on hover */
+    border: 1px solid #5299F8;
+}
+QComboBox QAbstractItemView {
+    background-color: rgb(46, 47, 48);
+    color: white;
+    selection-background-color: #2574F5;
+    selection-color: white;
+    border: 1px solid #2574F5;
+}
+QComboBox QAbstractItemView::item:hover {
+    background-color: #5299F8;
+    color: white;
+}
+</string>
    </property>
    <property name="placeholderText">
     <string>Type</string>
