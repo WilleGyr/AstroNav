@@ -75,7 +75,7 @@ ActivityBox::ActivityBox(QWidget *parent)
     QList<QWidget*> widgetsToHide = {ui->favouritesLabel, ui->Regisrationlable, ui->favoriteList, ui->usersList, ui->deleteButton, ui->favoriteButton, ui->passwordButton, ui->helpLabel, ui->searchButton, ui->Help1_label, ui->Help2_label, ui->Help3_label, ui->Help4_label, ui->Help5_label, ui->Help6_label, ui->Icon_1, ui->Icon_2, ui->Icon_3, ui->Icon_4, ui->Icon_5};
 
     // Assign widgets to lists for each menu
-    SearchWidgets = {ui->massMax, ui->massMin, ui->searchButton, ui->typeBox, ui->searchLineEdit, ui->massLabel, ui->typeLabel};
+    SearchWidgets = {ui->massMax, ui->massMin, ui->searchButton, ui->typeBox, ui->searchLineEdit, ui->massLabel, ui->typeLabel, ui->searchResultsList};
     UsersWidgets = {ui->usersList, ui->Regisrationlable, ui->deleteButton, ui->passwordButton};
     FavoriteWidgets = {ui->favouritesLabel, ui->favoriteList, ui->favoriteButton};
     HelpWidgets = {ui->helpLabel, ui->Help1_label, ui->Help2_label, ui->Help3_label, ui->Help4_label, ui->Help5_label, ui->Help6_label, ui->Icon_1, ui->Icon_2, ui->Icon_3, ui->Icon_4, ui->Icon_5};

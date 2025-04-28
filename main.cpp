@@ -168,6 +168,12 @@ int main(int argc, char *argv[]) {
     QWidget *rightBox = new QWidget();
     QVBoxLayout *rightLayout = new QVBoxLayout(rightBox);
 
+    // Set background color for the panels
+    QString panelStyle = "background-color: rgb(46, 47, 48); color:white;";
+    topPanel->setStyleSheet(panelStyle);
+    bottomPanel->setStyleSheet(panelStyle);
+    rightBox->setStyleSheet(panelStyle);
+
     qtmanager::setRightLayout(rightLayout, topPanel, bottomPanel);
 
     QWidget *centralWidget = new QWidget();

@@ -92,14 +92,50 @@ border-image: url(&quot;:/SpaceKnappar/SearchButton(NotPressed).png&quot;) 0 0 0
      <x>30</x>
      <y>140</y>
      <width>300</width>
-     <height>200</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgba(0, 0, 0, 0); color: #fff;</string>
+    <string notr="true">QListWidget {
+        background-color: rgb(46, 47, 48);
+        color: white;
+        border: 1px solid #2574F5;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    QListWidget::item:selected {
+        background-color: #2574F5;
+        color: white;
+    }
+    QListWidget::item:hover {
+        background-color: #5299F8;
+        color: white;
+    }
+    QScrollBar:vertical {
+        background: rgb(46, 47, 48);
+        width: 12px;
+        margin: 0px;
+        border: 1px solid #2574F5;
+        border-radius: 5px;
+    }
+    QScrollBar::handle:vertical {
+        background: #2574F5;
+        min-height: 20px;
+        border-radius: 5px;
+    }
+    QScrollBar::handle:vertical:hover {
+        background: #5299F8;
+    }
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+        background: none;
+        height: 0px;
+    }
+    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+        background: none;
+    }</string>
    </property>
   </widget>
   <widget class="QListWidget" name="usersList">
@@ -167,11 +203,30 @@ border-image: url(&quot;:/SpaceKnappar/SearchButton(NotPressed).png&quot;) 0 0 0
   <widget class="QComboBox" name="typeBox">
    <property name="geometry">
     <rect>
-     <x>90</x>
+     <x>120</x>
      <y>90</y>
      <width>140</width>
      <height>40</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QComboBox {
+        background-color: rgb(46, 47, 48);
+        color: white;
+        border: 1px solid #2574F5;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    QComboBox:hover {
+        border: 1px solid #5299F8; /* Slightly lighter blue on hover */
+    }
+    QComboBox QAbstractItemView {
+        background-color: rgb(46, 47, 48);
+        color: white;
+        selection-background-color: #2574F5;
+        selection-color: white;
+        border: 1px solid #2574F5;
+    }</string>
    </property>
    <property name="placeholderText">
     <string>Type</string>
@@ -260,6 +315,9 @@ border-image: url(&quot;:/SpaceKnappar/SearchButton(NotPressed).png&quot;) 0 0 0
     <font>
      <bold>true</bold>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(0,0,0,0)</string>
    </property>
    <property name="text">
     <string>Type:</string>
@@ -379,6 +437,9 @@ border-image: url(&quot;:/SpaceKnappar/SearchButton(NotPressed).png&quot;) 0 0 0
      <width>58</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgba(0,0,0,0)</string>
    </property>
   </widget>
   <widget class="QPushButton" name="deleteButton">
