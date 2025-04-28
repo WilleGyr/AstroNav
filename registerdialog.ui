@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RegisterDialog</class>
+ <widget class="QDialog" name="RegisterDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QPushButton" name="registerButton">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>250</y>
+     <width>100</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #2574F5;  /* Normal Blue */
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #1E5DC2;  /* Slightly darker border */
+    padding: 2px;
+    font-size: 16px;
+}
+
+QPushButton:hover {
+    background-color: #4590FF;  /* Lighter blue on hover */
+    border: 2px solid #1B52A5;
+}
+
+QPushButton:pressed {
+    background-color: #1E5DC2;  /* Darker blue when pressed */
+    border: 2px solid #163F87;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Register</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButtonRegister">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>250</y>
+     <width>100</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color: #505050;  /* Dark Grey */
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #404040;  /* Slightly darker border */
+    padding: 2px;
+    font-size: 16px;
+}
+
+QPushButton:hover {
+    background-color: #606060;  /* Lighter dark grey on hover */
+    border: 2px solid #505050;
+}
+
+QPushButton:pressed {
+    background-color: #303030;  /* Even darker grey when pressed */
+    border: 2px solid #202020;
+}
+</string>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="passwordRegister">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>138</y>
+     <width>161</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background-color: #333333;
+    border: 2px solid #555555;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+QLineEdit:hover {
+    border: 2px solid #777777;
+}
+
+QLineEdit:focus {
+    border: 2px solid #2574F5;
+    background-color: #222222;
+}
+</string>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
+   </property>
+   <property name="placeholderText">
+    <string>Password</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="usernameRegister">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>70</y>
+     <width>161</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background-color: #333333;
+    border: 2px solid #555555;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+QLineEdit:hover {
+    border: 2px solid #777777;
+}
+
+QLineEdit:focus {
+    border: 2px solid #2574F5;
+    background-color: #222222;
+}
+</string>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="placeholderText">
+    <string>Username</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>391</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>24</pointsize>
+     <bold>true</bold>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="text">
+    <string>Register account</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="passwordConfirmRegister">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>180</y>
+     <width>161</width>
+     <height>36</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>-1</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit {
+    background-color: #333333;
+    border: 2px solid #555555;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+QLineEdit:hover {
+    border: 2px solid #777777;
+}
+
+QLineEdit:focus {
+    border: 2px solid #2574F5;
+    background-color: #222222;
+}
+</string>
+   </property>
+   <property name="inputMask">
+    <string/>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
+   </property>
+   <property name="placeholderText">
+    <string>Confirm Password</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="emptyFieldsLabel">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>220</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: red</string>
+   </property>
+   <property name="text">
+    <string>Fields cannot be empty</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="passwordNotMatch">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>220</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: red</string>
+   </property>
+   <property name="text">
+    <string>Passwords do not match</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="usernameExists">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>220</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: red</string>
+   </property>
+   <property name="text">
+    <string>Username already exists</string>
+   </property>
+  </widget>
+  <zorder>registerButton</zorder>
+  <zorder>cancelButtonRegister</zorder>
+  <zorder>passwordRegister</zorder>
+  <zorder>label</zorder>
+  <zorder>passwordConfirmRegister</zorder>
+  <zorder>usernameRegister</zorder>
+  <zorder>emptyFieldsLabel</zorder>
+  <zorder>passwordNotMatch</zorder>
+  <zorder>usernameExists</zorder>
+ </widget>
+ <tabstops>
+  <tabstop>usernameRegister</tabstop>
+  <tabstop>passwordRegister</tabstop>
+  <tabstop>passwordConfirmRegister</tabstop>
+  <tabstop>cancelButtonRegister</tabstop>
+  <tabstop>registerButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
