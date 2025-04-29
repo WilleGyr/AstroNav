@@ -30,17 +30,17 @@
  QColor StarCreator::colorFromSpectralType(const QString &spType)
 {
     // Hämta första bokstaven (O, B, A, F, G, K, M) och gör den versal
-    QChar c = spType.isEmpty() ? 'G' : spType[0].toUpper();
+    QChar c = spType.isEmpty() ? 'L' : spType[0].toUpper();
 
     switch (c.toLatin1()) {
-    case 'O': return QColor(0x9bb0ff); // blå
-    case 'B': return QColor(0xaabfff); // bluish white
-    case 'A': return QColor(0xcad8ff); // white
-    case 'F': return QColor(0xf8f7ff); // yellowish white
-    case 'G': return QColor(0xfff4ea); // gul
-    case 'K': return QColor(0xffd2a1); // ljus orange
-    case 'M': return QColor(0xffcc6f); // ljus röd-orange
-    default:  return QColor(Qt::white); // fallback
+    case 'O': return QColor(Qt::darkBlue); // blå
+    case 'B': return QColor(Qt::blue); // bluish white
+    case 'A': return QColor(Qt::white); // white
+    case 'F': return QColor(Qt::yellow); // yellowish white
+    case 'G': return QColor(Qt::darkYellow); // gul
+    case 'K': return QColor(Qt::red); // ljus orange
+    case 'M': return QColor(Qt::darkRed); // ljus röd-orange
+    default:  return QColor(Qt::cyan); // fallback
     }
 }
 
@@ -91,23 +91,12 @@ void StarCreator::hoverStar(Qt3DExtras::QSphereMesh *starMesh,
     if (starLabel) {
         starLabel->setEnabled(true);
     }
-
-    // Mörklägg övriga stjärnor + solen
-    for (int i = 0; i < starEntities.size(); ++i) {
-        if (starMaterials[i] != starMaterial) {
-            starMaterials[i]->setDiffuse(QColor(Qt::black));
-            starMaterials[i]->setAmbient(QColor(Qt::black));
-            sunMaterial->setDiffuse(QColor(Qt::black));
-            sunMaterial->setAmbient(QColor(Qt::black));
-        }
-    }
 }
 
 void StarCreator::resetStar(Qt3DExtras::QSphereMesh *starMesh,
                             const QVector<Qt3DCore::QEntity *> &starEntities,
                             const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                             Qt3DExtras::QPhongMaterial *starMaterial,
-                            const QColor colors[],
                             Qt3DExtras::QPhongMaterial *sunMaterial,
                             Qt3DExtras::QText2DEntity *starLabel)
 {
@@ -119,19 +108,6 @@ void StarCreator::resetStar(Qt3DExtras::QSphereMesh *starMesh,
         starLabel->setEnabled(false);
     }
 
-    // Återställ färgerna på övriga stjärnor + solen
-    for (int i = 0; i < starEntities.size(); ++i) {
-        if (starMaterials[i] != starMaterial) {
-            // OBS: Om du vill återställa exakt rätt färg för var och en
-            // måste du antingen spara dess ursprungliga färg i en separat struktur,
-            // eller köra "colorFromSpectralType" igen för respektive stjärna.
-            // Här används en enkel fallback (colors[]).
-            starMaterials[i]->setDiffuse(colors[i % 3]);
-            starMaterials[i]->setAmbient(colors[i % 3].lighter(50));
-            sunMaterial->setDiffuse(QColor(Qt::yellow));
-            sunMaterial->setAmbient(QColor(Qt::yellow));
-        }
-    }
 }
 
 void StarCreator::hoverSun(Qt3DExtras::QSphereMesh *sunMesh,
@@ -144,18 +120,11 @@ void StarCreator::hoverSun(Qt3DExtras::QSphereMesh *sunMesh,
 
     // Visa solens etikett
     sunLabel->setEnabled(true);
-
-    // Mörklägg stjärnorna
-    for (int i = 0; i < starMaterials.size(); ++i) {
-        starMaterials[i]->setDiffuse(QColor(Qt::black));
-        starMaterials[i]->setAmbient(QColor(Qt::black));
-    }
 }
 
 void StarCreator::resetSun(Qt3DExtras::QSphereMesh *sunMesh,
                            float originalSunRadius,
                            const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                           const QColor colors[],
                            Qt3DExtras::QPhongMaterial *sunMaterial,
                            Qt3DExtras::QText2DEntity *sunLabel)
 {
@@ -163,15 +132,6 @@ void StarCreator::resetSun(Qt3DExtras::QSphereMesh *sunMesh,
 
     // Dölj solens etikett
     sunLabel->setEnabled(false);
-
-    // Återställ färgerna på stjärnorna
-    for (int i = 0; i < starMaterials.size(); ++i) {
-        starMaterials[i]->setDiffuse(colors[i % 3]);
-        starMaterials[i]->setAmbient(colors[i % 3].lighter(50));
-    }
-
-    sunMaterial->setDiffuse(QColor(Qt::yellow));
-    sunMaterial->setAmbient(QColor(Qt::yellow));
 }
 
 void StarCreator::pressStar(Qt3DCore::QTransform *starTransform,
@@ -454,7 +414,7 @@ void StarCreator::createStar(QVector<Qt3DCore::QEntity *> *starEntities,
 
     Qt3DExtras::QPhongMaterial *starMaterial = new Qt3DExtras::QPhongMaterial();
     starMaterial->setDiffuse(starColor);
-    starMaterial->setAmbient(starColor.lighter(50));
+    starMaterial->setAmbient(starColor.lighter(100));
 
     // Koppla ihop allt
     starEntity->addComponent(starMesh);
@@ -464,7 +424,6 @@ void StarCreator::createStar(QVector<Qt3DCore::QEntity *> *starEntities,
     // Lägg till en ljuskälla
     Qt3DCore::QEntity *starLightEntity = new Qt3DCore::QEntity(starEntity);
     Qt3DRender::QPointLight *starLight = new Qt3DRender::QPointLight();
-    starLight->setColor(starColor);
     starLight->setIntensity(30.0f);
     starLight->setConstantAttenuation(1.0f);
     starLight->setLinearAttenuation(0.2f);

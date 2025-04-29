@@ -27,7 +27,6 @@ public:
                           const QVector<Qt3DCore::QEntity *> &starEntities,
                           const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                           Qt3DExtras::QPhongMaterial *starMaterial,
-                          const QColor colors[],
                           Qt3DExtras::QPhongMaterial *sunMaterial,
                           Qt3DExtras::QText2DEntity *starLabel);
     static void hoverSun(Qt3DExtras::QSphereMesh *sunMesh,
@@ -38,7 +37,6 @@ public:
     static void resetSun(Qt3DExtras::QSphereMesh *sunMesh,
                          float originalSunRadius,
                          const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                         const QColor colors[],
                          Qt3DExtras::QPhongMaterial *sunMaterial,
                          Qt3DExtras::QText2DEntity *sunLabel);
     static void pressStar(Qt3DCore::QTransform *starTransform,

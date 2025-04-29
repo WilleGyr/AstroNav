@@ -15,7 +15,7 @@ Output:
 QSqlQuery getStars (const QString &database_path) {
 
     //fixing clumped stars (körs bara en gång, kommenteras bort efter det)
-    SeparateStars(database_path.toStdString());
+    //SeparateStars(database_path.toStdString());
 
     QSqlDatabase database = openDatabase(database_path.toStdString());
     if (!database.isOpen()) {
@@ -254,7 +254,7 @@ int main(int argc, char *argv[]) {
     sunEntity->addComponent(sunMaterial);
 
     // Set up sunlight
-    createSunLight(sunEntity);
+    //createSunLight(sunEntity);
 
     // Sun picker
     Qt3DRender::QObjectPicker *sunPicker = new Qt3DRender::QObjectPicker(sunEntity);
@@ -311,14 +311,8 @@ int main(int argc, char *argv[]) {
     QVector<QString> starIds;
     QVector<Qt3DExtras::QText2DEntity *> starLabels;
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> colorDist(0, 2);
-
-    const QColor colors[] = {Qt::red, Qt::yellow, Qt::blue};
-
     while (query.next()) {
-        QColor starColor = colors[colorDist(gen)];
+        
         // StarCreator::createStar använder nu även spType för att räkna ut rätt radie
         StarCreator::createStar(&starEntities, &starMaterials, &starIds, &starLabels, &query, rootEntity,camera);
 
@@ -392,8 +386,8 @@ int main(int argc, char *argv[]) {
         });
 
         QObject::connect(picker, &Qt3DRender::QObjectPicker::exited,
-                         [starMesh, starEntities, starMaterials, starMaterial, colors, sunMaterial, starLabel = starLabels[j]]() {
-                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, colors, sunMaterial, starLabel);
+                         [starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel = starLabels[j]]() {
+                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel);
                          });
 
         starEntity->addComponent(picker);
