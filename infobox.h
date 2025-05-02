@@ -22,6 +22,8 @@ public:
     QString getStarId();
     void setEditButtonVisibleForAdmin(bool isAdmin);
 
+signals:
+    void requestReload();
 
 private slots:
     void on_editSaveButton_clicked();

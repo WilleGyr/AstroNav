@@ -68,7 +68,8 @@ void InfoBox::on_editSaveButton_clicked() {
         QString newSpType = ui->spTypeLineEdit->text();
         QString oldName = ui->ID_label->text();
 
-        QSqlQuery query;
+        QSqlDatabase db = QSqlDatabase::database("starsConnection");
+        QSqlQuery query(db);
         query.prepare("UPDATE stars SET MAIN_ID = ?, SP_TYPE = ? WHERE MAIN_ID = ?");
         query.addBindValue(newName);
         query.addBindValue(newSpType);
@@ -77,6 +78,7 @@ void InfoBox::on_editSaveButton_clicked() {
         if (!query.exec()) {
             QMessageBox::warning(this, "Update Failed", "Failed to update star info: " + query.lastError().text());
         } else {
+            emit requestReload();
             ui->ID_label->setText(newName);
             ui->spTypeLabel->setText("<b>Spectral Type:</b> " + newSpType);
             toggleEditMode(false);

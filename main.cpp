@@ -146,6 +146,102 @@ void handleFirstPersonCameraInput(QWidget *container, Qt3DExtras::Qt3DWindow *vi
     container->setFocus();
 }
 
+/*
+Function to reload star info from updated database
+*/
+void reloadStars(Qt3DCore::QEntity *rootEntity,
+                 Qt3DRender::QCamera *camera,
+                 QVector<Qt3DCore::QEntity *> &starEntities,
+                 QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
+                 QVector<QString> &starIds,
+                 QVector<Qt3DExtras::QText2DEntity *> &starLabels,
+                 const QString &databasePath,
+                 InfoBox *topPanel,
+                 ActivityBox *bottomPanel,
+                 CameraManager *cameraManager,
+                 Qt3DExtras::Qt3DWindow *view)
+{
+    // Rensa gamla stjäror från scenen
+    for (auto *entity : starEntities) {
+        delete entity;
+    }
+    starEntities.clear();
+    starMaterials.clear();
+    starIds.clear();
+    starLabels.clear();
+
+    QSqlQuery query = getStars(databasePath);
+
+    while (query.next()) {
+        StarCreator::createStar(&starEntities, &starMaterials, &starIds, &starLabels, &query, rootEntity, camera);
+    }
+
+    auto updateLabels = [view, &starEntities, &starLabels]() {
+        StarCreator::updateLabels(view, starEntities, starLabels);
+    };
+
+    for (int j = 0; j < starEntities.size(); ++j) {
+        Qt3DCore::QEntity *starEntity = starEntities[j];
+        Qt3DCore::QTransform *starTransform = nullptr;
+        Qt3DExtras::QSphereMesh *starMesh = nullptr;
+
+        for (Qt3DCore::QComponent *component : starEntity->components()) {
+            if (auto mesh = qobject_cast<Qt3DExtras::QSphereMesh *>(component)) {
+                starMesh = mesh;
+            } else if (auto transform = qobject_cast<Qt3DCore::QTransform *>(component)) {
+                starTransform = transform;
+            }
+        }
+
+        Qt3DExtras::QPhongMaterial *starMaterial = starMaterials[j];
+
+        Qt3DRender::QObjectPicker *picker = new Qt3DRender::QObjectPicker(starEntity);
+        picker->setHoverEnabled(true);
+        picker->setDragEnabled(false);
+
+        QObject::connect(picker, &Qt3DRender::QObjectPicker::clicked,
+                         [cameraManager, starTransform, bottomPanel, topPanel, starId = starIds[j]](Qt3DRender::QPickEvent *pick) {
+                             if (pick->button() == Qt3DRender::QPickEvent::LeftButton) {
+                                 if (topPanel->getStarId() == starId) {
+                                     cameraManager->handleStarClick(starTransform);
+                                 }
+                                 bottomPanel->setCurrentStarId(starId);
+                                 bottomPanel->updateFavoriteButtonIcon();
+
+                                 QVector3D position = starTransform->translation();
+                                 QSqlQuery query(QSqlDatabase::database("starsConnection"));
+                                 query.prepare("SELECT SP_TYPE FROM stars WHERE MAIN_ID = ?");
+                                 query.addBindValue(starId);
+                                 if (query.exec() && query.next()) {
+                                     QString spType = query.value(0).toString();
+                                     topPanel->setStarInfo(starId,
+                                                           QString::number(position.x()),
+                                                           QString::number(position.y()),
+                                                           QString::number(position.z()),
+                                                           spType);
+                                 }
+                             }
+                         });
+
+        QObject::connect(picker, &Qt3DRender::QObjectPicker::entered,
+                         [starMesh, &starEntities, &starMaterials, starMaterial, starLabel = starLabels[j], updateLabels]() {
+                             StarCreator::hoverStar(starMesh, starEntities, starMaterials, starMaterial, nullptr, starLabel);
+                             if (starLabel) {
+                                 starLabel->setEnabled(true);
+                                 QTimer::singleShot(0, updateLabels);
+                             }
+                         });
+
+        QObject::connect(picker, &Qt3DRender::QObjectPicker::exited,
+                         [starMesh, &starEntities, &starMaterials, starMaterial, starLabel = starLabels[j]]() {
+                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, nullptr, starLabel);
+                         });
+
+        starEntity->addComponent(picker);
+    }
+}
+
+
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
@@ -322,6 +418,11 @@ int main(int argc, char *argv[]) {
     auto updateLabels = [view, starEntities, starLabels]() {
         StarCreator::updateLabels(view, starEntities, starLabels);
     };
+
+    QObject::connect(topPanel, &InfoBox::requestReload, [&]() {
+        reloadStars(rootEntity, camera, starEntities, starMaterials, starIds, starLabels,
+                    argv[0], topPanel, bottomPanel, cameraManager, view);
+    });
 
     // Connect camera movements to update labels
     QObject::connect(view->camera(), &Qt3DRender::QCamera::positionChanged, updateLabels);
