@@ -81,7 +81,6 @@ void StarCreator::hoverStar(Qt3DExtras::QSphereMesh *starMesh,
                             const QVector<Qt3DCore::QEntity *> &starEntities,
                             const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                             Qt3DExtras::QPhongMaterial *starMaterial,
-                            Qt3DExtras::QPhongMaterial *sunMaterial,
                             Qt3DExtras::QText2DEntity *starLabel)
 {
     float originalRadius = starMesh->radius();
@@ -97,7 +96,6 @@ void StarCreator::resetStar(Qt3DExtras::QSphereMesh *starMesh,
                             const QVector<Qt3DCore::QEntity *> &starEntities,
                             const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                             Qt3DExtras::QPhongMaterial *starMaterial,
-                            Qt3DExtras::QPhongMaterial *sunMaterial,
                             Qt3DExtras::QText2DEntity *starLabel)
 {
     float originalRadius = starMesh->radius() / 1.5f;
@@ -108,30 +106,6 @@ void StarCreator::resetStar(Qt3DExtras::QSphereMesh *starMesh,
         starLabel->setEnabled(false);
     }
 
-}
-
-void StarCreator::hoverSun(Qt3DExtras::QSphereMesh *sunMesh,
-                           float originalSunRadius,
-                           const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                           Qt3DExtras::QPhongMaterial *sunMaterial,
-                           Qt3DExtras::QText2DEntity *sunLabel)
-{
-    sunMesh->setRadius(originalSunRadius * 1.5f);
-
-    // Visa solens etikett
-    sunLabel->setEnabled(true);
-}
-
-void StarCreator::resetSun(Qt3DExtras::QSphereMesh *sunMesh,
-                           float originalSunRadius,
-                           const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                           Qt3DExtras::QPhongMaterial *sunMaterial,
-                           Qt3DExtras::QText2DEntity *sunLabel)
-{
-    sunMesh->setRadius(originalSunRadius);
-
-    // Dölj solens etikett
-    sunLabel->setEnabled(false);
 }
 
 void StarCreator::pressStar(Qt3DCore::QTransform *starTransform,
@@ -164,42 +138,6 @@ void StarCreator::pressStar(Qt3DCore::QTransform *starTransform,
     targetPosition = starPosition - offset;
     startViewCenter = view->camera()->viewCenter();
     targetViewCenter = starPosition;
-    elapsedTime = 0.0f;
-    isAnimating = true;
-
-    cameraTimer->start();
-}
-
-void StarCreator::pressSun(Qt3DCore::QTransform *sunTransform,
-                           Qt3DExtras::Qt3DWindow *view,
-                           QTimer *cameraTimer,
-                           bool &isAnimating,
-                           QVector3D &startPosition,
-                           QVector3D &targetPosition,
-                           QVector3D &startViewCenter,
-                           QVector3D &targetViewCenter,
-                           float &elapsedTime,
-                           float duration,
-                           QEasingCurve &easingCurve,
-                           QTimer *focusTimer)
-{
-    if (isAnimating) {
-        cameraTimer->stop();
-    }
-    focusTimer->stop();
-
-    QVector3D sunPosition = sunTransform->translation();
-    QVector3D cameraPosition = view->camera()->position();
-    QVector3D direction = sunPosition - cameraPosition;
-
-    float distanceFromSun = 7.5f;
-    direction.normalize();
-    QVector3D offset = direction * distanceFromSun;
-
-    startPosition = cameraPosition;
-    targetPosition = sunPosition - offset;
-    startViewCenter = view->camera()->viewCenter();
-    targetViewCenter = sunPosition;
     elapsedTime = 0.0f;
     isAnimating = true;
 

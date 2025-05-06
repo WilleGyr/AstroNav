@@ -23,7 +23,7 @@ CameraManager::CameraManager(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *roo
                 m_isViewingSun = false;
                 emit starTeleported(starId, position);
             });
-
+    /*
     connect(m_firstPersonController, &FirstPersonCameraController::starSelected,
             this, [this](const QString &starId, const QVector3D &position) {
                 if (starId == "Sun") {
@@ -31,6 +31,7 @@ CameraManager::CameraManager(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *roo
                 }
                 emit starSelected(starId, position);
             });
+    */
 
     connect(m_thirdPersonController, &ThirdPersonCameraController::starTeleported,
             this, [this](const QString &starId, const QVector3D &position) {
@@ -38,7 +39,7 @@ CameraManager::CameraManager(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *roo
                 m_isViewingSun = false;
                 emit starTeleported(starId, position);
             });
-
+    /*
     connect(m_thirdPersonController, &ThirdPersonCameraController::starSelected,
             this, [this](const QString &starId, const QVector3D &position) {
                 if (starId == "Sun") {
@@ -46,6 +47,7 @@ CameraManager::CameraManager(Qt3DRender::QCamera *camera, Qt3DCore::QEntity *roo
                 }
                 emit starSelected(starId, position);
             });
+    */
 }
 
 CameraManager::~CameraManager()
@@ -177,20 +179,5 @@ void CameraManager::handleStarClick(Qt3DCore::QTransform *starTransform)
         m_firstPersonController->handleStarClick(starTransform);
     } else {
         m_thirdPersonController->handleStarClick(starTransform);
-    }
-}
-
-void CameraManager::handleSunClick(Qt3DCore::QTransform *sunTransform)
-{
-    // Store the sun info for mode switching
-    m_currentStarTransform = sunTransform;
-    m_isViewingSun = true;
-    m_currentStarId = "Sun";
-
-    // Forward the call to the active controller
-    if (m_cameraMode == FirstPersonMode) {
-        m_firstPersonController->handleSunClick(sunTransform);
-    } else {
-        m_thirdPersonController->handleSunClick(sunTransform);
     }
 }

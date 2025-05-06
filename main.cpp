@@ -33,6 +33,7 @@ QSqlQuery getStars (const QString &database_path) {
     return db_query;
 }
 
+
 /*
 Function to load background music
 
@@ -109,26 +110,6 @@ void createSkybox(Qt3DCore::QEntity *rootEntity) {
     Qt3DCore::QTransform *skyboxTransform = new Qt3DCore::QTransform();
     skyboxTransform->setScale(2500.0f);
     skybox->addComponent(skyboxTransform);
-}
-
-/*
-Function to create the sunlight
-
-Input:
-- Qt3DCore::QEntity pointer (sunEntity)
-
-Output:
-- none (void function)
-*/
-void createSunLight(Qt3DCore::QEntity *sunEntity) {
-    Qt3DCore::QEntity *sunLightEntity = new Qt3DCore::QEntity(sunEntity);
-    Qt3DRender::QPointLight *sunLight = new Qt3DRender::QPointLight();
-    sunLight->setColor(QColor(Qt::yellow));
-    sunLight->setIntensity(50.0f);
-    sunLight->setConstantAttenuation(1.0f);
-    sunLight->setLinearAttenuation(0.2f);
-    sunLight->setQuadraticAttenuation(0.05f);
-    sunLightEntity->addComponent(sunLight);
 }
 
 /*
@@ -225,7 +206,7 @@ void reloadStars(Qt3DCore::QEntity *rootEntity,
 
         QObject::connect(picker, &Qt3DRender::QObjectPicker::entered,
                          [starMesh, &starEntities, &starMaterials, starMaterial, starLabel = starLabels[j], updateLabels]() {
-                             StarCreator::hoverStar(starMesh, starEntities, starMaterials, starMaterial, nullptr, starLabel);
+                             StarCreator::hoverStar(starMesh, starEntities, starMaterials, starMaterial, starLabel);
                              if (starLabel) {
                                  starLabel->setEnabled(true);
                                  QTimer::singleShot(0, updateLabels);
@@ -234,7 +215,7 @@ void reloadStars(Qt3DCore::QEntity *rootEntity,
 
         QObject::connect(picker, &Qt3DRender::QObjectPicker::exited,
                          [starMesh, &starEntities, &starMaterials, starMaterial, starLabel = starLabels[j]]() {
-                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, nullptr, starLabel);
+                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, starLabel);
                          });
 
         starEntity->addComponent(picker);
@@ -333,31 +314,6 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    // Create the sun entity
-    Qt3DCore::QEntity *sunEntity = new Qt3DCore::QEntity(rootEntity);
-    Qt3DExtras::QSphereMesh *sunMesh = new Qt3DExtras::QSphereMesh();
-    sunMesh->setRadius(1.5f);
-
-    Qt3DCore::QTransform *sunTransform = new Qt3DCore::QTransform();
-    sunTransform->setTranslation(QVector3D(0, 0, 0));
-
-    Qt3DExtras::QPhongMaterial *sunMaterial = new Qt3DExtras::QPhongMaterial();
-    sunMaterial->setDiffuse(QColor(Qt::yellow));
-    sunMaterial->setAmbient(QColor(255, 255, 0, 150));
-
-    sunEntity->addComponent(sunMesh);
-    sunEntity->addComponent(sunTransform);
-    sunEntity->addComponent(sunMaterial);
-
-    // Set up sunlight
-    //createSunLight(sunEntity);
-
-    // Sun picker
-    Qt3DRender::QObjectPicker *sunPicker = new Qt3DRender::QObjectPicker(sunEntity);
-    sunPicker->setHoverEnabled(true);
-    sunPicker->setDragEnabled(false);
-    sunEntity->addComponent(sunPicker);
-
     // Set up camera
     Qt3DRender::QCamera *camera = view->camera();
     camera->lens()->setPerspectiveProjection(45.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
@@ -369,7 +325,9 @@ int main(int argc, char *argv[]) {
 
     // Set initial camera mode to ThirdPersonMode when program starts
     cameraManager->setCameraMode(CameraManager::ThirdPersonMode);
-    cameraManager->handleSunClick(sunTransform);
+
+    //remove
+    //cameraManager->handleSunClick(sunTransform);
 
     // Connect camera mode toggle signal from ActivityBox to CameraManager
     QObject::connect(bottomPanel, &ActivityBox::toggleCameraMode,
@@ -381,18 +339,6 @@ int main(int argc, char *argv[]) {
                          bottomPanel->updateCameraModeButton(static_cast<int>(mode));
                          // Give focus back to the container after mode change
                          QTimer::singleShot(50, [container]() {container->setFocus();});
-                     });
-
-
-    // Connect sun picker to camera manager and InfoBox
-    QObject::connect(sunPicker, &Qt3DRender::QObjectPicker::clicked,
-                     [cameraManager, sunTransform, topPanel](Qt3DRender::QPickEvent *pick) {
-                         if (pick->button() == Qt3DRender::QPickEvent::LeftButton) {
-                             if(topPanel->getStarId()=="Sun"){
-                                 cameraManager->handleSunClick(sunTransform);
-                             }
-                             topPanel->setStarInfo("Sun", "0", "0", "0", "G2V");                         
-                         }
                      });
 
     QObject::connect(bottomPanel, &ActivityBox::teleportToStar,
@@ -443,7 +389,7 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        Qt3DExtras::QPhongMaterial *starMaterial = starMaterials[j];
+        //Qt3DExtras::QPhongMaterial *starMaterial = starMaterials[j];
 
         Qt3DRender::QObjectPicker *picker = new Qt3DRender::QObjectPicker(starEntity);
         picker->setHoverEnabled(true);
@@ -476,23 +422,24 @@ int main(int argc, char *argv[]) {
                          });
 
         QObject::connect(picker, &Qt3DRender::QObjectPicker::entered,
-                         [starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel = starLabels[j], &updateLabels]() {
-                             StarCreator::hoverStar(starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel);
-            // Force show label regardless of camera position
-            if (starLabel) {
-                starLabel->setEnabled(true);
-                // Force immediate update
-                QTimer::singleShot(0, updateLabels);
-            }
-        });
+                         [starMesh, &starEntities, &starMaterials, starMaterial = starMaterials[j], starLabel = starLabels[j], &updateLabels]() {
+                             StarCreator::hoverStar(starMesh, starEntities, starMaterials, starMaterial, starLabel);
+                             // Force show label regardless of camera position
+                             if (starLabel) {
+                                 starLabel->setEnabled(true);
+                                 // Force immediate update
+                                 QTimer::singleShot(0, updateLabels);
+                             }
+                         });
 
         QObject::connect(picker, &Qt3DRender::QObjectPicker::exited,
-                         [starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel = starLabels[j]]() {
-                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, sunMaterial, starLabel);
+                         [starMesh, &starEntities, &starMaterials, starMaterial = starMaterials[j], starLabel = starLabels[j]]() {
+                             StarCreator::resetStar(starMesh, starEntities, starMaterials, starMaterial, starLabel);
                          });
 
         starEntity->addComponent(picker);
     }
+
 
     view->setRootEntity(rootEntity);
 

@@ -33,7 +33,6 @@ public slots:
     // Forward relevant signals to the active controller
     void teleportToStar(const QVector3D &coordinates, const QString &starId = QString());
     void handleStarClick(Qt3DCore::QTransform *starTransform);
-    void handleSunClick(Qt3DCore::QTransform *sunTransform);
 
 signals:
     void cameraModeChanged(CameraMode mode);

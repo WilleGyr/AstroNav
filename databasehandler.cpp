@@ -20,7 +20,7 @@ std::string getDatabasePath(std::string argv){
 
     // cuts out what is not the path to the current directory
     // adds on the name of the database file
-    for(int i=0; i<3; i++){
+    for(int i=0; i<2; i++){
         int cutter = databasePath.find_last_of(cut);
         databasePath = databasePath.substr(0,cutter);    
     }

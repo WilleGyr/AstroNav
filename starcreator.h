@@ -21,24 +21,12 @@ public:
                           const QVector<Qt3DCore::QEntity *> &starEntities,
                           const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                           Qt3DExtras::QPhongMaterial *starMaterial,
-                          Qt3DExtras::QPhongMaterial *sunMaterial,
                           Qt3DExtras::QText2DEntity *starLabel);
     static void resetStar(Qt3DExtras::QSphereMesh *starMesh,
                           const QVector<Qt3DCore::QEntity *> &starEntities,
                           const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
                           Qt3DExtras::QPhongMaterial *starMaterial,
-                          Qt3DExtras::QPhongMaterial *sunMaterial,
                           Qt3DExtras::QText2DEntity *starLabel);
-    static void hoverSun(Qt3DExtras::QSphereMesh *sunMesh,
-                         float originalSunRadius,
-                         const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                         Qt3DExtras::QPhongMaterial *sunMaterial,
-                         Qt3DExtras::QText2DEntity *sunLabel);
-    static void resetSun(Qt3DExtras::QSphereMesh *sunMesh,
-                         float originalSunRadius,
-                         const QVector<Qt3DExtras::QPhongMaterial *> &starMaterials,
-                         Qt3DExtras::QPhongMaterial *sunMaterial,
-                         Qt3DExtras::QText2DEntity *sunLabel);
     static void pressStar(Qt3DCore::QTransform *starTransform,
                           Qt3DExtras::Qt3DWindow *view,
                           QTimer *cameraTimer,
@@ -51,18 +39,6 @@ public:
                           float duration,
                           QEasingCurve &easingCurve,
                           QTimer *focusTimer);
-    static void pressSun(Qt3DCore::QTransform *sunTransform,
-                         Qt3DExtras::Qt3DWindow *view,
-                         QTimer *cameraTimer,
-                         bool &isAnimating,
-                         QVector3D &startPosition,
-                         QVector3D &targetPosition,
-                         QVector3D &startViewCenter,
-                         QVector3D &targetViewCenter,
-                         float &elapsedTime,
-                         float duration,
-                         QEasingCurve &easingCurve,
-                         QTimer *focusTimer);
     static void createStar(QVector<Qt3DCore::QEntity *> *starEntities,
                            QVector<Qt3DExtras::QPhongMaterial *> *starMaterials,
                            QVector<QString> *starIds,
